@@ -32,20 +32,26 @@ class Student {
     protected void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
+    protected Integer getAge() {
+    	LocalDate today = LocalDate.now();
+    	LocalDate birthday = birthDate;
+    	Period diff = Period.between(birthday, today);
+		return diff.getYears();
+    }
 }
 public class Ejercicio5 {
     public static void main(String[] args) {
 
         List<Student> students = List.of(
                 new Student("Pedro", "Gonzales", LocalDate.of(1979,12,2)),
-                new Student("Juan", "Pérez", LocalDate.of(1984,2,29)),
+                new Student("Juan", "PÃ©rez", LocalDate.of(1984,2,29)),
                 new Student("Jhon", "Smith", LocalDate.of(1995,8,28)),
                 new Student("Jane", "Doe", LocalDate.of(2000,4,24)),
                 new Student("Fulano", "Mengano", LocalDate.of(1998,11,10))
         );
         Map<String, Integer> mapStudent = students.stream()
                 .collect(Collectors.toMap(studentName -> '\"'+studentName.getLastName()+" "+studentName.getName()+'\"',
-                        studentAge -> LocalDate.now().getYear() - studentAge.getBirthDate().getYear()));
+                        studentAge -> studentAge.getAge()));
         System.out.println(mapStudent);
     }
 }
